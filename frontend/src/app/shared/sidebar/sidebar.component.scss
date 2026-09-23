@@ -1,0 +1,26 @@
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background-color: var(--ems-primary);
+}
+
+.sidebar-brand {
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.nav-link {
+  color: #cfd8dc;
+  border-radius: 0.4rem;
+}
+
+.nav-link:hover {
+  background-color: var(--ems-primary-light);
+  color: #fff;
+}
+
+.nav-link.active {
+  background-color: var(--ems-accent);
+  color: #fff;
+}

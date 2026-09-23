@@ -1,0 +1,23 @@
+<h3 class="page-title">Reports</h3>
+
+<div class="row g-3">
+  <div class="col-md-4" *ngFor="let report of reportList">
+    <div class="card p-3 h-100 d-flex flex-column">
+      <div class="d-flex align-items-center mb-3">
+        <i class="bi {{ report.icon }} fs-3 text-primary me-3"></i>
+        <h5 class="mb-0">{{ report.label }}</h5>
+      </div>
+      <p class="text-muted small flex-grow-1">
+        Export the {{ report.label | lowercase }} as a PDF or Excel spreadsheet.
+      </p>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-danger btn-sm" (click)="download(report.key, 'pdf')">
+          <i class="bi bi-file-earmark-pdf me-1"></i>PDF
+        </button>
+        <button class="btn btn-outline-success btn-sm" (click)="download(report.key, 'excel')">
+          <i class="bi bi-file-earmark-excel me-1"></i>Excel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<h3 class="page-title">My Dashboard</h3>
+
+<div class="text-center my-5" *ngIf="loading">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<div class="alert alert-warning" *ngIf="!loading && errorMessage">{{ errorMessage }}</div>
+
+<div *ngIf="!loading && data">
+  <div class="card p-4 mb-4">
+    <h4 class="mb-1">Welcome, {{ data.profile.full_name }} 👋</h4>
+    <p class="text-muted mb-0">
+      {{ data.profile.employee_code }} &middot;
+      {{ data.profile.department || 'No department' }} &middot;
+      {{ data.profile.designation || 'No designation' }}
+    </p>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card p-3 h-100">
+        <h6 class="text-muted">Today's Attendance</h6>
+        <p class="mb-1"><strong>Status:</strong> {{ data.today_attendance.status }}</p>
+        <p class="mb-1" *ngIf="data.today_attendance.check_in">
+          <strong>Check-in:</strong> {{ data.today_attendance.check_in }}
+        </p>
+        <p class="mb-0" *ngIf="data.today_attendance.check_out">
+          <strong>Check-out:</strong> {{ data.today_attendance.check_out }}
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3 h-100">
+        <h6 class="text-muted">Pending Leave Requests</h6>
+        <h3 class="mb-0">{{ data.pending_leave_requests }}</h3>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card p-3 h-100">
+        <h6 class="text-muted">Recent Payslip</h6>
+        <div *ngIf="data.recent_payslip; else noPayslip">
+          <p class="mb-1">{{ data.recent_payslip.month }} {{ data.recent_payslip.year }}</p>
+          <h5 class="mb-0">₹{{ data.recent_payslip.net_salary }}</h5>
+        </div>
+        <ng-template #noPayslip>
+          <p class="text-muted mb-0">No payslip generated yet.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-3">
+    <h5 class="mb-3">My Assigned Projects</h5>
+    <table class="table table-hover" *ngIf="data.assigned_projects.length; else noProjects">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Status</th>
+          <th>My Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let project of data.assigned_projects">
+          <td>{{ project.name }}</td>
+          <td>
+            <span class="badge" [ngClass]="'badge-status-' + project.status.toLowerCase()">
+              {{ project.status }}
+            </span>
+          </td>
+          <td>{{ project.role_in_project }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noProjects>
+      <p class="text-muted mb-0">You are not assigned to any projects yet.</p>
+    </ng-template>
+  </div>
+</div>

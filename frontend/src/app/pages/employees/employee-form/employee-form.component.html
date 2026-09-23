@@ -1,0 +1,77 @@
+<h3 class="page-title">{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h3>
+
+<div class="card p-4">
+  <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Employee Code</label>
+        <input type="text" class="form-control" formControlName="employee_code" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control" formControlName="username" [readonly]="isEditMode" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" formControlName="email" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">First Name</label>
+        <input type="text" class="form-control" formControlName="first_name" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Last Name</label>
+        <input type="text" class="form-control" formControlName="last_name" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">{{ isEditMode ? 'New Password (optional)' : 'Password' }}</label>
+        <input type="password" class="form-control" formControlName="password" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Department</label>
+        <select class="form-select" formControlName="department">
+          <option [ngValue]="null">Select department</option>
+          <option *ngFor="let dept of departments" [ngValue]="dept.id">{{ dept.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Designation</label>
+        <select class="form-select" formControlName="designation">
+          <option [ngValue]="null">Select designation</option>
+          <option *ngFor="let designation of designations" [ngValue]="designation.id">
+            {{ designation.title }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Phone</label>
+        <input type="text" class="form-control" formControlName="phone" />
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Date of Joining</label>
+        <input type="date" class="form-control" formControlName="date_of_joining" />
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">Address</label>
+        <input type="text" class="form-control" formControlName="address" />
+      </div>
+
+      <div class="col-12" *ngIf="isEditMode">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="isActive" formControlName="is_active" />
+          <label class="form-check-label" for="isActive">Active</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+      <button type="submit" class="btn btn-ems-primary">{{ isEditMode ? 'Update' : 'Create' }} Employee</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

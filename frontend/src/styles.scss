@@ -1,0 +1,71 @@
+/* Global styles for the Employee Management System */
+
+:root {
+  --ems-primary: #2c3e50;
+  --ems-primary-light: #34495e;
+  --ems-accent: #3498db;
+  --ems-success: #27ae60;
+  --ems-warning: #f39c12;
+  --ems-danger: #e74c3c;
+  --ems-bg: #f4f6f8;
+}
+
+body {
+  background-color: var(--ems-bg);
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.page-title {
+  font-weight: 600;
+  color: var(--ems-primary);
+  margin-bottom: 1.25rem;
+}
+
+.card {
+  border: none;
+  border-radius: 0.6rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card {
+  border-radius: 0.6rem;
+  color: #fff;
+  padding: 1.25rem;
+}
+
+.stat-card h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.stat-card p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.bg-ems-blue { background-color: #3498db; }
+.bg-ems-green { background-color: #27ae60; }
+.bg-ems-orange { background-color: #f39c12; }
+.bg-ems-purple { background-color: #8e44ad; }
+.bg-ems-red { background-color: #e74c3c; }
+.bg-ems-teal { background-color: #16a085; }
+
+.table thead {
+  background-color: var(--ems-primary);
+  color: #fff;
+}
+
+.badge-status-planning { background-color: #95a5a6; }
+.badge-status-active { background-color: #27ae60; }
+.badge-status-completed { background-color: #3498db; }
+
+.btn-ems-primary {
+  background-color: var(--ems-accent);
+  color: #fff;
+}
+
+.btn-ems-primary:hover {
+  background-color: #2980b9;
+  color: #fff;
+}

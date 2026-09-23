@@ -1,0 +1,151 @@
+<h3 class="page-title">Payroll</h3>
+
+<div *ngIf="isAdmin">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="mb-0">Salary Structures</h5>
+    <button class="btn btn-sm btn-ems-primary" (click)="showSalaryForm = !showSalaryForm">
+      <i class="bi bi-plus-lg me-1"></i>Set Salary Structure
+    </button>
+  </div>
+
+  <div class="card p-3 mb-3" *ngIf="showSalaryForm">
+    <form [formGroup]="salaryForm" (ngSubmit)="submitSalaryStructure()">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Employee</label>
+          <select class="form-select" formControlName="employee">
+            <option [ngValue]="null">Select employee</option>
+            <option *ngFor="let emp of employees" [ngValue]="emp.id">{{ emp.full_name }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Basic</label>
+          <input type="number" class="form-control" formControlName="basic_salary" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">HRA</label>
+          <input type="number" class="form-control" formControlName="hra" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Allowances</label>
+          <input type="number" class="form-control" formControlName="other_allowances" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Deductions</label>
+          <input type="number" class="form-control" formControlName="deductions" />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-ems-primary mt-3">Save</button>
+    </form>
+  </div>
+
+  <div class="card p-3 mb-4">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Basic</th>
+          <th>HRA</th>
+          <th>Allowances</th>
+          <th>Deductions</th>
+          <th>Gross</th>
+          <th>Net</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of salaryStructures">
+          <td>{{ s.employee_name }}</td>
+          <td>{{ s.basic_salary }}</td>
+          <td>{{ s.hra }}</td>
+          <td>{{ s.other_allowances }}</td>
+          <td>{{ s.deductions }}</td>
+          <td>{{ s.gross_salary }}</td>
+          <td><strong>{{ s.net_salary }}</strong></td>
+        </tr>
+        <tr *ngIf="!salaryStructures.length">
+          <td colspan="7" class="text-center text-muted">No salary structures defined yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="mb-0">Generate Payslip</h5>
+    <button class="btn btn-sm btn-ems-primary" (click)="showPayslipForm = !showPayslipForm">
+      <i class="bi bi-plus-lg me-1"></i>New Payslip
+    </button>
+  </div>
+
+  <div class="card p-3 mb-3" *ngIf="showPayslipForm">
+    <form [formGroup]="payslipForm" (ngSubmit)="submitPayslip()">
+      <div class="row g-3">
+        <div class="col-md-3">
+          <label class="form-label">Employee</label>
+          <select class="form-select" formControlName="employee">
+            <option [ngValue]="null">Select employee</option>
+            <option *ngFor="let emp of employees" [ngValue]="emp.id">{{ emp.full_name }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Month</label>
+          <select class="form-select" formControlName="month">
+            <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Year</label>
+          <input type="number" class="form-control" formControlName="year" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Basic</label>
+          <input type="number" class="form-control" formControlName="basic_salary" />
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Allowances</label>
+          <input type="number" class="form-control" formControlName="allowances" />
+        </div>
+        <div class="col-md-1">
+          <label class="form-label">Deduct.</label>
+          <input type="number" class="form-control" formControlName="deductions" />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-ems-primary mt-3">Generate</button>
+    </form>
+  </div>
+</div>
+
+<div class="card p-3">
+  <h5 class="mb-3">{{ isAdmin ? 'All Payslips' : 'My Payslips' }}</h5>
+
+  <div class="text-center my-4" *ngIf="loading">
+    <div class="spinner-border text-primary"></div>
+  </div>
+
+  <table class="table table-hover" *ngIf="!loading">
+    <thead>
+      <tr>
+        <th *ngIf="isAdmin">Employee</th>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Basic</th>
+        <th>Allowances</th>
+        <th>Deductions</th>
+        <th>Net Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payslip of payslips">
+        <td *ngIf="isAdmin">{{ payslip.employee_name }}</td>
+        <td>{{ payslip.month }}</td>
+        <td>{{ payslip.year }}</td>
+        <td>{{ payslip.basic_salary }}</td>
+        <td>{{ payslip.allowances }}</td>
+        <td>{{ payslip.deductions }}</td>
+        <td><strong>₹{{ payslip.net_salary }}</strong></td>
+      </tr>
+      <tr *ngIf="!payslips.length">
+        <td [attr.colspan]="isAdmin ? 7 : 6" class="text-center text-muted">No payslips found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

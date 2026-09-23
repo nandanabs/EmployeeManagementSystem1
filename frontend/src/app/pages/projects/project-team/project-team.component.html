@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <button class="btn btn-sm btn-outline-secondary mb-2" (click)="back()">
+      <i class="bi bi-arrow-left"></i> Back to Projects
+    </button>
+    <h3 class="page-title mb-0">{{ project?.name }} — Team</h3>
+  </div>
+  <button class="btn btn-ems-primary" (click)="openAssignModal()">
+    <i class="bi bi-person-plus me-1"></i>Assign Employees
+  </button>
+</div>
+
+<div class="card p-3">
+  <div class="text-center my-4" *ngIf="loading">
+    <div class="spinner-border text-primary"></div>
+  </div>
+
+  <table class="table table-hover" *ngIf="!loading">
+    <thead>
+      <tr>
+        <th>Employee Code</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Assigned On</th>
+        <th class="text-end">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let member of teamMembers">
+        <td>{{ member.employee_code }}</td>
+        <td>{{ member.employee_name }}</td>
+        <td>{{ member.role_in_project }}</td>
+        <td>{{ member.assigned_date }}</td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-danger" (click)="removeMember(member.employee)">
+            <i class="bi bi-person-dash"></i> Remove
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="!teamMembers.length">
+        <td colspan="5" class="text-center text-muted">No team members assigned yet.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Assign Employees Modal -->
+<div class="modal-backdrop-custom" *ngIf="showAssignModal">
+  <div class="modal-box card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">Assign Employees to {{ project?.name }}</h5>
+      <button class="btn-close" (click)="closeAssignModal()"></button>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Role in Project</label>
+      <input type="text" class="form-control" [(ngModel)]="roleInProject" [ngModelOptions]="{ standalone: true }" />
+    </div>
+
+    <div class="mb-3 employee-checklist">
+      <label class="form-label">Select Employees</label>
+      <div class="form-check" *ngFor="let emp of allEmployees">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          [id]="'emp-' + emp.id"
+          [disabled]="isAlreadyAssigned(emp.id)"
+          (change)="toggleEmployeeSelection(emp.id, $any($event.target).checked)"
+        />
+        <label class="form-check-label" [for]="'emp-' + emp.id">
+          {{ emp.full_name }} ({{ emp.employee_code }})
+          <span class="text-muted small" *ngIf="isAlreadyAssigned(emp.id)"> — already assigned</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-end">
+      <button class="btn btn-outline-secondary" (click)="closeAssignModal()">Cancel</button>
+      <button class="btn btn-ems-primary" [disabled]="!selectedEmployeeIds.length" (click)="assignSelected()">
+        Assign Selected
+      </button>
+    </div>
+  </div>
+</div>
